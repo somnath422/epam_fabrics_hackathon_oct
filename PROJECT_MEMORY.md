@@ -160,6 +160,14 @@ Unique-account view: 1,679 test accounts; 179 with positive snapshots in the tes
 
 Among detected accounts only, first correct alert observed during the test period had lead time min 3, mean 50.6, median 54, max 90 days; 113 had at least 30 days and 65 at least 60 days. This is not lifetime-first detection and does not guarantee 90-day warning for every churner.
 
+### Model registration and metric persistence — November 10, 2026
+
+In `nb_03_train_evaluate`, the existing saved pipeline was logged to experiment `customer_intelligence_churn_registry_demo`, run `c4c184ee-8db3-45ee-be9c-c068eb21937d`, and registered as `customer_intelligence_churn_lr_registry_demo` version 1. Artifact inspection verified a finished run and model metadata. Reload via the exact `models:/customer_intelligence_churn_lr_registry_demo/1` URI succeeded with ImputerModel, VectorAssembler and LogisticRegressionModel and the original 13 inputs. On 100 feature-ready September 30, 2025 rows, maximum probability difference from the original pipeline was 0.0.
+
+Complete test metrics were copied/derived from `gold_evaluation_summary`, evaluation run `86e5303d-70c6-47e7-b3f4-6efafa226320`, and persisted/read back in the registration run. Definitions and provenance were saved at `evaluation/test_metric_definitions.json`. Population: 21,178 held-out Monday snapshots, 1,136 positive, July 7-September 29, 2025, disjoint account buckets/time periods. Accuracy is 98.956464%; always-negative baseline 94.635943%; lift is precision at 0.05 divided by positive prevalence, 18.443219x (not top-decile lift). Precision, recall, F1, Spark areaUnderPR and confusion counts are also saved. These are the original pipeline's evaluation, not a full test-set rerun of the registered version.
+
+The user verified exactly one active release, retaining `churn_lr_v1`, `Files/models/churn_lr_v1`, the original evaluation run, High 0.05 and Medium 0.03. No retraining or active-release replacement occurred. Dependency inference emitted a fallback warning; input signature/example were not logged. Reload is verified in Fabric only, not outside that runtime. Signed attribution reconstruction has prior evidence below, but has not been rerun during registration; T04 remains partial pending that acceptance check. Updated cloud notebook cells have not been exported to Git.
+
 ### Daily reporting and explanations
 
 Daily held-out scoring covers buckets 8-9, July 1-September 30, 2025: 150,127 snapshots, 1,685 accounts, 92 dates.
