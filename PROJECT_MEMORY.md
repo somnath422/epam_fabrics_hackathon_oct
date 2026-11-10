@@ -72,6 +72,7 @@ Names below identify the existing demo; another tenant must create its own resou
 | Real-Time Dashboard | `rtd_customer_risk_replay` |
 | Working event-level Activator rule | `eh_customer_intelligence event alert` (default UI name) |
 | Old property-level rule | `demo_high_risk_review`; intentionally left stopped |
+| Customer ontology | `ont_customer_intelligence` (new Ontology experience, Preview) |
 
 Core Delta tables:
 
@@ -80,6 +81,23 @@ Core Delta tables:
 - Gold foundation: `gold_customer360_daily`, `gold_training_outcomes`.
 - Operational/reporting: `gold_account_risk`, `gold_report_portfolio`, `gold_retention_actions`.
 - Coverage, split, evaluation, and release tables also exist in the cloud workflow; export notebooks to recover their exact names and schemas.
+
+### Fabric Ontology progress — November 10, 2026
+
+The user created `ont_customer_intelligence` in the Fabric Ontology experience (UI marked Preview) and confirmed six entity types, five Account relationships, OneLake/Lakehouse source bindings, composite entity keys, and loaded instance previews:
+
+| Entity | Bound source | Entity type key |
+|---|---|---|
+| Account | `silver_account` | `tenant_id`, `account_id` |
+| Contact | `silver_contact` | `tenant_id`, `primary_contact_id` |
+| SubscriptionSnapshot | `silver_subscription_daily` | `tenant_id`, `account_id`, `subscription_id`, `snapshot_date` |
+| UsageObservation | `silver_usage_daily` | `tenant_id`, `account_id`, `snapshot_date` |
+| SupportObservation | `silver_support_daily` | `tenant_id`, `account_id`, `snapshot_date` |
+| InteractionObservation | `silver_interaction_daily` | `tenant_id`, `account_id`, `snapshot_date` |
+
+Every temporal observation is related from Account using tenant/account keys; Account is related to Contact. The user reports all five relationships were added correctly. Ontology metadata descriptions were added. The Ontology Agent preview returned Account and related Contact details for `TEN007965` / `ACC007965`, and returned three related UsageObservation rows dated Dec 28-30, 2025 with active users, sessions, and API calls. This verifies an interactive agent query over those sources/relationships, not a separately evaluated production Copilot Studio agent.
+
+This improves the previous status: an ontology with entity definitions, OneLake source bindings, relationships, and successful sample queries is now demonstrated. It does **not** establish cross-system identity resolution or a match-quality report; IDs are generated and tenant IDs are effectively one per account. The ontology experience is Preview. Export the ontology definition and retain screenshots before treating it as independently reproducible.
 
 ## 4. Data foundation and invariants
 
@@ -360,7 +378,7 @@ At each handoff update this file with the date, actual changed artifacts, valida
 
 The supplied judging rubric weights Business Value 25, Technical Excellence 20, Solution Quality 25, Innovation 15, and Presentation & demo 15. Detailed status and a corrected rehearsal checklist are in [Judges_Readiness_and_Gap_Review.md](./submission/Judges_Readiness_and_Gap_Review.md).
 
-Against the team's seven target capabilities, only the base data/score/event/task/report flow is demonstrated. Fabric IQ ontology, true multi-source identity resolution/match-quality evidence, KQL-derived journeys/signals, scheduled auditable segmentation, Fabric ML registry registration, Copilot Studio agent, customer notification delivery, and Purview labels are absent or unverified. Direct Lake mode is unverified. Do not state them as delivered.
+Against the team's seven target capabilities, the base data/score/event/task/report flow and a six-entity Fabric Ontology Preview with OneLake bindings and successful sample queries are demonstrated. True multi-source identity resolution/match-quality evidence, KQL-derived journeys/signals, scheduled auditable segmentation, Fabric ML registry registration, Copilot Studio agent, customer notification delivery, and Purview labels are absent or unverified. Direct Lake mode is unverified. Do not state these gaps as delivered. Ontology details and its Preview limitation are recorded in the Fabric Ontology progress section above.
 
 From the held-out confusion matrix, accuracy is derivable as 98.96%, baseline always-negative accuracy is 94.64%, and precision/prevalence lift is 18.44x. Treat accuracy and lift as derived values, not separately persisted model metrics. Keep PR-AUC (Spark `areaUnderPR`) and disjoint account/time split context with all claims.
 
