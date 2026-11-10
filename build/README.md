@@ -2,6 +2,8 @@
 
 Prepared October 29, 2026. This is an execution plan, not evidence that the cloud solution has already been implemented.
 
+**Returning to the project?** Read the [current project memory and implementation handoff](../PROJECT_MEMORY.md), updated November 10, 2026. It distinguishes verified demo progress from planned work and lists cloud artifacts still awaiting export.
+
 ## Start here
 
 Build an explainable retention decision system: identify risk, explain the evidence, recommend an action, and demonstrate that the action reaches its owner.
@@ -21,9 +23,11 @@ The existing dataset is synthetic. Historical daily snapshots are replayed; they
 | Somnath Roy | Team lead, platform, integration, cost, release | [Somnath](./03_Somnath_Roy_Lead.md) |
 | Archi S | Business analyst, acceptance testing, value model, presentation | [Archi](./04_Archi_S_Business_Analyst.md) |
 | Ashish (Developer 1) | Data engineering, quality, Customer 360 | [Ashish](./05_Ashish_Data_Engineering.md) |
-| Irfan (Developer 2) | ML, evaluation, scoring, explanations | [Irfan](./06_Irfan_ML_and_Explainability.md) |
+| Irfan (Developer 2) | ML, evaluation, scoring, explanations | [Irfan](./06_sujith.md) |
 | Lokesh (Developer 3) | Power BI semantic model, reports, RLS | [Lokesh: beginner Power BI guide](./07_Lokesh_Power_BI_Beginner.md) |
-| Sujith (Developer 4) | Eventstream, Eventhouse, replay, activation | [Sujith](./08_Sujith_Replay_and_Activation.md) |
+| Sujith (Developer 4) | Eventstream, Eventhouse, replay, activation | [Sujith](./08_irfan.md) |
+
+**Setting up the environment?** Follow [resources, ingestion, and Gold dataset](./09_Setup_Ingestion_Gold_Guide.md) step by step.
 
 No Power BI experience is assumed. Developer 3 uses the browser first; no Windows machine is required for the recommended path.
 
