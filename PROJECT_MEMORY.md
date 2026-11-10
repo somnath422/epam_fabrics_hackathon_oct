@@ -194,6 +194,12 @@ Screenshots of `sm_customer_intelligence` table properties confirmed Direct Lake
 
 The semantic model's sensitivity-label settings showed No label and the organizational-disabled banner: "This setting is turned off because your organization has stopped supporting it." The report settings inspected exposed no sensitivity-label option; report label status remains unverified. Workspace access inspection showed Admin roles only. The user deferred restricted-access testing for the demo; no roles, permissions, or labels were changed. Do not claim verified tenant isolation, least-privilege enforcement, or applied Purview labels. T05 remains partial: classification inventory, supported label application and approved restricted-user testing are still open. Proceed to T06 without demoting existing collaborators.
 
+### Draft retention playbook handoff — November 11, 2026
+
+The user created `11_retention_playbook_demo` and ran a read-only preview of six proposed segment-specific plays: adoption review/enablement, support escalation/recovery, sponsor/champion engagement review, coordinated account review, monitoring, and evidence-gap resolution. Each has an owner role, approver role, proposed action and proposed success measure. At this point nothing has been persisted, no tasks created, and no outreach sent.
+
+The user explicitly selected "Keep as draft pending Archi/business-owner approval" and requested continued demo work while leaving approval to Archi. T06 is partial, not approved. Archi owns review of play eligibility, signal/rule-version alignment, evidence freshness, audience/channel, consent/suppression, owner/approver responsibilities and measurable outcomes. Continue only with clearly labeled illustrative draft content; downstream agents must not present these as approved retention recommendations. Historical evidence is valid only for its disclosed demo date, not current outreach. External outreach is blocked without verified contact, consent, suppression, channel permission and human approval. No automatic messages, discounts or task creation are authorized by this draft. Proposed success measures are tracking targets, not proven retention efficacy. Versioned persistence and enforcement tests are still pending.
+
 ## 6. Replay and automated action contract
 
 ### Saved replay
