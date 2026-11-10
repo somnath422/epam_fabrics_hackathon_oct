@@ -1,6 +1,6 @@
 # Project memory: Customer Intelligence Engine
 
-Last updated: November 10, 2026.
+Last updated: November 11, 2026.
 
 This is the shared engineering handoff and continuation baseline. Read it before changing the project or asking an AI assistant to continue work. It records confirmed demo progress from the build sessions; it is not a fresh inspection of the live tenant. Current capacity, rule, connection, and job status must be checked in Fabric.
 
@@ -187,6 +187,12 @@ Segments map strongest contributors to transparent demo plays. September 30 High
 - `Scored Accounts = DISTINCTCOUNT('gold_report_portfolio'[account_id])`.
 - `High Risk Accounts = CALCULATE([Scored Accounts], 'gold_report_portfolio'[risk_band] = "High")`.
 - State synthetic data, limited scored cohort, uncalibrated scores, and historical dates explicitly. Preserve these disclosures.
+
+### Direct Lake and governance inspection — November 10-11, 2026
+
+Screenshots of `sm_customer_intelligence` table properties confirmed Direct Lake storage mode for both `gold_report_portfolio` and `gold_retention_actions`. This confirms configured table storage mode, not the execution path of every report query.
+
+The semantic model's sensitivity-label settings showed No label and the organizational-disabled banner: "This setting is turned off because your organization has stopped supporting it." The report settings inspected exposed no sensitivity-label option; report label status remains unverified. Workspace access inspection showed Admin roles only. The user deferred restricted-access testing for the demo; no roles, permissions, or labels were changed. Do not claim verified tenant isolation, least-privilege enforcement, or applied Purview labels. T05 remains partial: classification inventory, supported label application and approved restricted-user testing are still open. Proceed to T06 without demoting existing collaborators.
 
 ## 6. Replay and automated action contract
 
@@ -425,7 +431,7 @@ At each handoff update this file with the date, actual changed artifacts, valida
 
 The supplied judging rubric weights Business Value 25, Technical Excellence 20, Solution Quality 25, Innovation 15, and Presentation & demo 15. Detailed status and a corrected rehearsal checklist are in [Judges_Readiness_and_Gap_Review.md](./submission/Judges_Readiness_and_Gap_Review.md).
 
-Against the team's seven target capabilities, the base data/score/event/task/report flow and a six-entity Fabric Ontology Preview with OneLake bindings and successful sample queries are demonstrated. Subsequent T01-T04 work added bounded KQL historical usage signals, a synthetic identity-rule fixture, manual versioned segmentation history, and a separately registered model with verified reload, sample parity, reconstruction and persisted metrics; details and limitations are recorded above. True multi-source identity resolution, scheduled segmentation, Copilot Studio agent, customer notification delivery, and Purview labels remain absent or unverified. Direct Lake mode is unverified. Do not state these remaining gaps as delivered.
+Against the team's seven target capabilities, the base data/score/event/task/report flow and a six-entity Fabric Ontology Preview with OneLake bindings and successful sample queries are demonstrated. Subsequent T01-T04 work added bounded KQL historical usage signals, a synthetic identity-rule fixture, manual versioned segmentation history, and a separately registered model with verified reload, sample parity, reconstruction and persisted metrics; details and limitations are recorded above. True multi-source identity resolution, scheduled segmentation, Copilot Studio agent, customer notification delivery, and Purview labels remain absent or unverified. Direct Lake table storage mode is verified for both semantic-model tables; labeling is organizationally disabled on the model and restricted-access tests are deferred. Do not state remaining governance gaps as delivered.
 
 From the held-out confusion matrix, accuracy is derivable as 98.96%, baseline always-negative accuracy is 94.64%, and precision/prevalence lift is 18.44x. Treat accuracy and lift as derived values, not separately persisted model metrics. Keep PR-AUC (Spark `areaUnderPR`) and disjoint account/time split context with all claims.
 
