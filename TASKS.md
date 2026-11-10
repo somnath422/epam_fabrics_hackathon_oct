@@ -36,37 +36,72 @@ Updated: November 10, 2026. This is the shared source of truth for progress. Upd
 | T08 | Export cloud implementation and run end-to-end acceptance | Somnath + all owners | **READY** | Each workstream's exports | Sanitized notebooks/configs/metrics/report/KQL/ontology evidence in approved repo; positive, duplicate, stale, unauthorized, failure and retry paths checked; no credentials committed. |
 | T09 | Rehearse and submit the 5–10-minute judge demo | Archi + Somnath | **READY** | T08 and organizers' confirmed submission instructions | One timed rehearsal, backup recording/screenshots, consistent labels and counts; clearly distinguishes synthetic historical proof from future capabilities. |
 
-## Current next action: T01.1, bounded usage preview
+## Current next action: T01.2, calculate Spark reference signals
 
 **Completed T01 verification:** the user ran a `take 5` query against `customer_risk_events`. Its rows are the historical risk-score replay, not the raw daily usage observations required for behavior signals.
 
-**Now do only this: inspect a bounded sample; do not ingest or modify Eventhouse yet.**
+**Completed T01.1 bounded preview:** the user created notebook `08_prepare_usage_journey_demo`, attached `lh_customer_intelligence`, and displayed **121 rows** for `ACC008178` / `TEN008178`, June 2 through September 30, 2025. The preview includes active users, sessions, API calls and licensed seats.
 
-1. In workspace `ws_customer_intelligence`, create a new Fabric **Notebook** named `08_prepare_usage_journey_demo`.
-2. Attach the existing Lakehouse `lh_customer_intelligence`.
-3. Add a PySpark cell and run:
+Before ingesting or creating Eventhouse queries, compute an independently inspectable Spark reference using the same definitions: current 30 days (Sep 1-30) vs prior 30 days (Aug 2-31), inclusive.
 
-   ```python
-   from pyspark.sql import functions as F
+Add a **new PySpark cell** to the existing notebook and run:
 
-   usage = spark.table("silver_usage_daily").where(
-       (F.col("account_id") == "ACC008178")
-       & (F.col("snapshot_date") >= F.lit("2025-06-02").cast("date"))
-       & (F.col("snapshot_date") <= F.lit("2025-09-30").cast("date"))
-   )
+```python
+from pyspark.sql import functions as F
 
-   print("Rows:", usage.count())
-   display(
-       usage.select(
-           "tenant_id", "account_id", "snapshot_date",
-           "active_users", "sessions", "api_calls", "licensed_seats"
-       ).orderBy("snapshot_date")
-   )
-   ```
+signals = (
+    usage
+    .withColumn("snapshot_date", F.to_date("snapshot_date"))
+    .withColumn(
+        "seat_utilisation",
+        F.when(
+            F.col("licensed_seats") > 0,
+            F.col("active_users") / F.col("licensed_seats")
+        )
+    )
+)
 
-4. Stop and share the row count plus a screenshot of the first/last rows. Do not save new files or send events yet.
+current = F.col("snapshot_date").between("2025-09-01", "2025-09-30")
+prior = F.col("snapshot_date").between("2025-08-02", "2025-08-31")
 
-Expected: up to 121 daily rows for the synthetic account. The query checks actual availability; do not assume there are no gaps or interpret risk score as a usage signal. If the table or columns are missing, stop and report the exact error.
+averages = signals.agg(
+    F.count(F.when(current, 1)).alias("current_days"),
+    F.count(F.when(prior, 1)).alias("prior_days"),
+    F.avg(F.when(current, F.col("active_users"))).alias("active_users_current_avg"),
+    F.avg(F.when(prior, F.col("active_users"))).alias("active_users_prior_avg"),
+    F.avg(F.when(current, F.col("api_calls"))).alias("api_calls_current_avg"),
+    F.avg(F.when(prior, F.col("api_calls"))).alias("api_calls_prior_avg"),
+    F.avg(F.when(current, F.col("seat_utilisation"))).alias("seat_util_current_avg"),
+    F.avg(F.when(prior, F.col("seat_utilisation"))).alias("seat_util_prior_avg"),
+)
+
+def decline_pct(prior_name, current_name):
+    return F.when(
+        F.col(prior_name) > 0,
+        (F.col(prior_name) - F.col(current_name)) / F.col(prior_name) * 100
+    )
+
+reference = (
+    averages
+    .withColumn(
+        "active_users_decline_pct",
+        decline_pct("active_users_prior_avg", "active_users_current_avg")
+    )
+    .withColumn(
+        "api_calls_decline_pct",
+        decline_pct("api_calls_prior_avg", "api_calls_current_avg")
+    )
+    .withColumn(
+        "seat_utilisation_decline_pct",
+        decline_pct("seat_util_prior_avg", "seat_util_current_avg")
+    )
+)
+
+print("Windows: current 2025-09-01..2025-09-30; prior 2025-08-02..2025-08-31")
+display(reference)
+```
+
+Expected coverage is 30 rows in each window. If either count is not 30, stop; do not interpret a partial-window comparison as a full 30-day signal. Share the output table. This writes nothing and sends no events.
 
 ## Team update protocol
 

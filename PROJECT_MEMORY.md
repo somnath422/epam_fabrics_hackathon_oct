@@ -202,6 +202,8 @@ The original schema replay was observed as seven stored rows, seven unique IDs, 
 
 On November 10 the user ran `customer_risk_events | take 5` in the KQL queryset and shared a screenshot. The visible event identifiers/replay/release/object fields and the known event schema confirm this is the saved risk-score replay table, not a raw daily usage-observation stream. The next behavior-journey work must stage a bounded `silver_usage_daily` export into a separate Eventhouse table; do not calculate usage signals from risk-score events or alter the existing alert source.
 
+The user created a separate Fabric notebook `08_prepare_usage_journey_demo`, attached `lh_customer_intelligence`, and ran a read-only preview of `silver_usage_daily` for `TEN008178` / `ACC008178`, June 2-September 30, 2025. The screenshot showed 121 rows and fields `active_users`, `sessions`, `api_calls`, and `licensed_seats`. Next: calculate Spark reference values for current 30 days (Sep 1-30) vs prior 30 days (Aug 2-31), require 30 observations in each window, and only then prepare a separate Eventhouse behavioral-observation path. No new usage events have been ingested yet.
+
 ### Activator path
 
 - Property-level rule did not expose needed dynamic event fields. The working rule is **event-level**.
