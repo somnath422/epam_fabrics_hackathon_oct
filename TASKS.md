@@ -28,7 +28,7 @@ Updated: November 10, 2026. This is the shared source of truth for progress. Upd
 |---|---|---|---|---|---|
 | T01 | Build KQL account journey and three behavioral signals | Sujith + Ashish | **DONE** | Existing Eventhouse connection; choose bounded historical account cohort | Verified 121-row replay for ACC008178 in separate `customer_usage_observations_demo`; KQL returns 30 days per comparison window, matching Spark reference averages and three declines; saved `usage_journey_001_degradation`. Historical replay disclosed; existing risk-event/Activator path untouched. |
 | T02 | Define canonical identity rules and match-quality report | Ashish + Archi | **DONE** | Existing generated IDs; use a small explicitly synthetic multi-source match sample if testing resolution | Tenant-scoped exact-key-only auto-match rule documented; synthetic fixture exercised duplicates, missing keys, unmatched and ambiguous domains; 2 TP / 0 FP / 3 FN (100% precision, 40% recall); cross-tenant case remained unmatched. This measures only the fixture, not real-world identity quality. |
-| T03 | Add versioned behavioral segmentation and membership history | Irfan + Archi | **READY** | T01 signal definitions | Distinct behavioral segment vs. risk band; rule version, as-of date, evidence and run ID persisted; repeat run creates no duplicates; previous membership remains auditable. |
+| T03 | Add versioned behavioral segmentation and membership history | Irfan + Archi | **DONE** | T01 signal definitions | `gold_behavioral_segment_history_demo` holds 15,236 memberships across Nov 30 (7,702) and Dec 30 (7,534), 2025, with provisional rule version, evidence, hash and run metadata. Repeat writes preserved counts with zero duplicate keys; December compared unchanged against Delta version 0 after November insertion. Manual synthetic demo only; no schedule or production approval claimed. |
 | T04 | Register the existing model and persist complete metrics | Irfan | **READY** | Confirm Fabric ML registry support; preserve active release | Registered version reloads successfully; scores match existing pipeline; metric definitions/denominators include accuracy, precision, recall, lift, F1 and PR-AUC; signed attribution reconstruction still passes. |
 | T05 | Confirm Direct Lake mode and apply available Purview labels | Lokesh + Somnath | **READY** | Inspect current semantic model and tenant governance capabilities | Capture actual storage mode; label inventory covers personal/contact-like fields and documents unsupported surfaces; test access with approved identities. Do not claim unavailable controls. |
 | T06 | Approve a risk-based retention marketing playbook | Archi | **READY** | Supported signals/segments from T01/T03 | Small approved strategy set with eligibility, evidence, audience/channel, consent/suppression, owner/approver and success measure. No generic discount assumption or automatic outreach. |
@@ -36,7 +36,7 @@ Updated: November 10, 2026. This is the shared source of truth for progress. Upd
 | T08 | Export cloud implementation and run end-to-end acceptance | Somnath + all owners | **READY** | Each workstream's exports | Sanitized notebooks/configs/metrics/report/KQL/ontology evidence in approved repo; positive, duplicate, stale, unauthorized, failure and retry paths checked; no credentials committed. |
 | T09 | Rehearse and submit the 5–10-minute judge demo | Archi + Somnath | **READY** | T08 and organizers' confirmed submission instructions | One timed rehearsal, backup recording/screenshots, consistent labels and counts; clearly distinguishes synthetic historical proof from future capabilities. |
 
-## Current next action: T03, add versioned behavioral segmentation and membership history
+## Current next action: T04, register the existing model and persist complete metrics
 
 T01 is complete. The user created and saved a bounded synthetic historical usage replay in `customer_usage_observations_demo`, verified its 121 rows / 121 unique events for one account from June 2 through September 30, 2025, and saved the KQL comparison query `usage_journey_001_degradation`. KQL and Spark use inclusive windows of Aug 2-31 and Sep 1-30, with 30 observations each. The observed averages match: active users 12.6667 to 6.4, API calls 1900.1333 to 951.3667, and seat utilization 30.89% to 15.61%; declines are approximately 49.47%, 49.93%, and 49.47%, respectively.
 
@@ -45,6 +45,19 @@ The usage observations are a synthetic historical replay, not live inference or 
 T02 is complete using the source profile and synthetic fixture executed in `09_identity_match_quality_demo`. Silver profile: 10,000 account rows and 10,000 contact rows; unique `(tenant_id, account_id)` on both; zero orphan contact account keys; zero `account_id` reuse across tenants; zero duplicate non-empty domains within a tenant; and one contact row per account. The contact source has no email, so no email-based identity claim is made.
 
 Canonical rule: auto-match only when both `tenant_id` and `account_id` are present and their exact pair resolves to exactly one catalog row. Duplicate exact keys, missing tenant, missing account, and domain-only evidence are not automatically linked; domain candidates are only review suggestions scoped to a supplied tenant, and ambiguous domains require review. Never match across tenants. On the separate eight-record synthetic fixture, results were TP=2, FP=0, FN=3 (100% precision, 40% recall); duplicate-key, missing-tenant, domain-candidate, ambiguous-domain, and unmatched cases were observed, and a cross-tenant lookalike remained unmatched. These metrics characterize only the deliberately constructed fixture, not production or multi-source match quality. Notebook evidence remains cloud-only.
+
+T03 is complete in cloud notebook `10_behavioral_segmentation_demo`. The user accepted proposed v1 thresholds for demo use: usage/API change <= -25%, critical tickets >= 2 or approximate TTR >= 5 days, and days since CSM touch >= 21 or no-show rate >= 0.25. Two or more categories yield Mixed risk; otherwise use the single category or Monitor, with incomplete evidence labeled Insufficient Data. The rule remains `behavioral_v1_provisional`, separate from model risk bands. Each date uses two adjacent 30-day usage windows and as-of support/interaction observations; duplicate/missing/negative usage checks passed.
+
+| Segment | Nov 30, 2025 | Dec 30, 2025 |
+|---|---:|---:|
+| Adoption decline | 5 | 0 |
+| Mixed risk | 177 | 9 |
+| Monitor | 5,888 | 5,789 |
+| Relationship gap | 1,614 | 1,717 |
+| Support distress | 18 | 19 |
+| Total | 7,702 | 7,534 |
+
+Memberships are insert-only by `(tenant_id, account_id, as_of_date, rule_version)` in the separate `gold_behavioral_segment_history_demo` table. Persisted evidence/hash, run ID, timestamp and synthetic/historical/provisional flags support audit. Repeat writes left 15,236 rows and zero duplicate keys; an exact row comparison proved December unchanged from Delta version 0 after November was added. This is a manual historical demo, not scheduled segmentation or production-ready concurrency validation. Only accounts with an observation on the as-of date are covered. Existing risk/report/Activator paths were not modified; the notebook has not been exported to Git.
 
 ## Team update protocol
 

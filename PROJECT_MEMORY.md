@@ -220,6 +220,23 @@ The documented canonical rule is exact tenant-scoped account identity: auto-matc
 
 The notebook ran a separate eight-record synthetic fixture with a separately declared ground truth. It verified the exact-key matches, a duplicated catalog key, missing tenant, domain candidate, cross-tenant lookalike, ambiguous domain, and unmatched complete keys. The output was TP=2, FP=0, FN=3; automatic-match precision=100%, recall=40%. These are fixture-level metrics only—not evidence of production match quality, real identity resolution, or multi-source deduplication. No Lakehouse source was modified; notebook evidence remains cloud-only and is not exported to Git.
 
+### Behavioral segmentation history — November 10, 2026
+
+The user executed `10_behavioral_segmentation_demo`, reading Silver usage/support/interaction observations and writing only the separate Delta table `gold_behavioral_segment_history_demo`. The demo uses `behavioral_v1_provisional`, not model risk bands. User-approved-for-demo thresholds: usage/API change <= -25% for Adoption decline; critical open tickets >= 2 or approximate TTR >= 5 days for Support distress; days since touch >= 21 or no-show rate >= 0.25 for Relationship gap. Two or more categories produce Mixed risk; no threshold produces Monitor; incomplete required data produces Insufficient Data.
+
+Each snapshot uses two adjacent complete 30-day usage windows, with as-of support and interaction rows. November 30 uses Oct 2-31 vs Nov 1-30; December 30 uses Nov 1-30 vs Dec 1-30. All included accounts had complete usage, exactly one as-of support and interaction row, no null change ratios, and no duplicate/missing/negative usage measurements in those windows.
+
+| Segment | Nov 30, 2025 | Dec 30, 2025 |
+|---|---:|---:|
+| Adoption decline | 5 | 0 |
+| Mixed risk | 177 | 9 |
+| Monitor | 5,888 | 5,789 |
+| Relationship gap | 1,614 | 1,717 |
+| Support distress | 18 | 19 |
+| Total | 7,702 | 7,534 |
+
+History key is `(tenant_id, account_id, as_of_date, rule_version)`. Supporting measurements, segment evidence, evidence hash, run ID, recorded timestamp and synthetic/historical/provisional flags are persisted. Insert-only Delta merges reject changed evidence for existing keys. The user verified sequential repeat writes kept 15,236 total rows and zero duplicate keys. Exact `exceptAll` comparisons in both directions against Delta version 0 proved December rows unchanged after inserting November. T03 is complete for this bounded manual demo; scheduled execution, concurrent writer safety, production threshold approval, and report integration are not demonstrated. Accounts absent on the as-of date are excluded, not labeled Monitor. The notebook remains cloud-only; existing risk/report/Activator paths were not changed.
+
 ### Activator path
 
 - Property-level rule did not expose needed dynamic event fields. The working rule is **event-level**.
