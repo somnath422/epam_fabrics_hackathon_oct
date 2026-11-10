@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+	<!ENTITY rdfs 'http://www.w3.org/2000/01/rdf-schema#'>
+	<!ENTITY xsd 'http://www.w3.org/2001/XMLSchema#'>
+	<!ENTITY owl 'http://www.w3.org/2002/07/owl#'>
+	<!ENTITY skos 'http://www.w3.org/2004/02/skos/core#'>
+	<!ENTITY fabric 'https://fabric.microsoft.com/ontology/64fe7b5a-c5ca-430a-a0e9-6760a11d5665#'>
+]>
+<rdf:RDF xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:fabric="https://fabric.microsoft.com/ontology/64fe7b5a-c5ca-430a-a0e9-6760a11d5665#" xmlns:ns0="urn:fabric-internal:" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <owl:Ontology rdf:about="https://fabric.microsoft.com/ontology/64fe7b5a-c5ca-430a-a0e9-6760a11d5665">
+    <rdfs:label rdf:datatype="&xsd;string">ont_customer_intelligence</rdfs:label>
+  </owl:Ontology>
+  <owl:Class rdf:about="&fabric;Account">
+    <rdfs:comment rdf:datatype="&xsd;string">One synthetic SaaS customer account. Identity is scoped by tenant_id and account_id. Account attributes are sourced from silver_account.</rdfs:comment>
+    <rdfs:label rdf:datatype="&xsd;string">Account</rdfs:label>
+    <skos:altLabel rdf:datatype="&xsd;string">Customer</skos:altLabel>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="&fabric;Account__account_id">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">account_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;Account__tenant_id">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">tenant_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="&fabric;Contact">
+    <rdfs:comment rdf:datatype="&xsd;string">The synthetic primary contact associated with an account, sourced from silver_contact. The contact is identified by tenant_id and primary_contact_id; this dataset has one primary contact per account.</rdfs:comment>
+    <rdfs:label rdf:datatype="&xsd;string">Contact</rdfs:label>
+    <skos:altLabel rdf:datatype="&xsd;string">Customer Contact</skos:altLabel>
+    <skos:altLabel rdf:datatype="&xsd;string">Primary Contact</skos:altLabel>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="&fabric;Contact__account_id">
+    <rdfs:domain rdf:resource="&fabric;Contact" />
+    <rdfs:label rdf:datatype="&xsd;string">account_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;Contact__tenant_id">
+    <rdfs:domain rdf:resource="&fabric;Contact" />
+    <rdfs:label rdf:datatype="&xsd;string">tenant_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="&fabric;InteractionObservation">
+    <rdfs:comment rdf:datatype="&xsd;string">Daily account-level interaction aggregates sourced from silver_interaction_daily. These are rolling engagement measures, not individual meeting or contact events.</rdfs:comment>
+    <rdfs:label rdf:datatype="&xsd;string">InteractionObservation</rdfs:label>
+    <skos:altLabel rdf:datatype="&xsd;string">Enghagement Snapshot</skos:altLabel>
+    <skos:altLabel rdf:datatype="&xsd;string">Interaction Metrics</skos:altLabel>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="&fabric;InteractionObservation__account_id">
+    <rdfs:domain rdf:resource="&fabric;InteractionObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">account_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;InteractionObservation__snapshot_date">
+    <rdfs:domain rdf:resource="&fabric;InteractionObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">snapshot_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;InteractionObservation__tenant_id">
+    <rdfs:domain rdf:resource="&fabric;InteractionObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">tenant_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="&fabric;SubscriptionSnapshot">
+    <rdfs:comment rdf:datatype="&xsd;string">A daily snapshot of an account’s subscription attributes, sourced from silver_subscription_daily. The same subscription may appear on multiple snapshot dates. This entity intentionally excludes cancellation and status fields that could reveal future churn.</rdfs:comment>
+    <rdfs:label rdf:datatype="&xsd;string">SubscriptionSnapshot</rdfs:label>
+    <skos:altLabel rdf:datatype="&xsd;string">Daily Subscription</skos:altLabel>
+    <skos:altLabel rdf:datatype="&xsd;string">Subscription Snapshot</skos:altLabel>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="&fabric;SubscriptionSnapshot__account_id">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">account_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;SubscriptionSnapshot__snapshot_date">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">snapshot_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;SubscriptionSnapshot__tenant_id">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">tenant_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="&fabric;SupportObservation">
+    <rdfs:comment rdf:datatype="&xsd;string">Daily account-level support aggregates sourced from silver_support_daily. These are summary metrics, not individual ticket records.</rdfs:comment>
+    <rdfs:label rdf:datatype="&xsd;string">SupportObservation</rdfs:label>
+    <skos:altLabel rdf:datatype="&xsd;string">Support Metrics</skos:altLabel>
+    <skos:altLabel rdf:datatype="&xsd;string">Support Snapshot</skos:altLabel>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="&fabric;SupportObservation__account_id">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">account_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;SupportObservation__snapshot_date">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">snapshot_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;SupportObservation__tenant_id">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">tenant_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="&fabric;UsageObservation">
+    <rdfs:comment rdf:datatype="&xsd;string">A daily account-level usage observation sourced from silver_usage_daily, including active users, sessions, feature events, API calls, and licensed seats. One record represents one account on one snapshot date.</rdfs:comment>
+    <rdfs:label rdf:datatype="&xsd;string">UsageObservation</rdfs:label>
+    <skos:altLabel rdf:datatype="&xsd;string">Daily Usage</skos:altLabel>
+    <skos:altLabel rdf:datatype="&xsd;string">Usage Snapshot</skos:altLabel>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="&fabric;UsageObservation__account_id">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">account_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;UsageObservation__snapshot_date">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">snapshot_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;UsageObservation__tenant_id">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">tenant_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+    <ns0:qualifiedPropertyName rdf:datatype="&xsd;string">true</ns0:qualifiedPropertyName>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;account_name">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">account_name</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;active_users">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">active_users</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;api_calls">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">api_calls</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;arr_usd">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">arr_usd</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;double" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;avg_ttr_days_60d">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">avg_ttr_days_60d</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;double" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;created_date">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">created_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;critical_open_tickets">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">critical_open_tickets</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;csm_owner">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">csm_owner</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;days_since_last_csm_touch">
+    <rdfs:domain rdf:resource="&fabric;InteractionObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">days_since_last_csm_touch</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;domain">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">domain</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;employee_count">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">employee_count</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;feature_a_events">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">feature_a_events</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;feature_b_events">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">feature_b_events</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;feature_c_events">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">feature_c_events</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="&fabric;has%20interaction%20observation">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">has interaction observation</rdfs:label>
+    <rdfs:range rdf:resource="&fabric;InteractionObservation" />
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="&fabric;has%20primary%20contact">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">has primary contact</rdfs:label>
+    <rdfs:range rdf:resource="&fabric;Contact" />
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="&fabric;has%20subscription%20snapshot">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">has subscription snapshot</rdfs:label>
+    <rdfs:range rdf:resource="&fabric;SubscriptionSnapshot" />
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="&fabric;has%20support%20observation">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">has support observation</rdfs:label>
+    <rdfs:range rdf:resource="&fabric;SupportObservation" />
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="&fabric;has%20usage%20observation">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">has usage observation</rdfs:label>
+    <rdfs:range rdf:resource="&fabric;UsageObservation" />
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;industry">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">industry</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;interactions_30d">
+    <rdfs:domain rdf:resource="&fabric;InteractionObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">interactions_30d</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;licensed_seats">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">licensed_seats</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;mrr_usd">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">mrr_usd</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;double" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;no_show_rate_90d">
+    <rdfs:domain rdf:resource="&fabric;InteractionObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">no_show_rate_90d</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;double" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;plan_tier">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">plan_tier</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;primary_contact_created_date">
+    <rdfs:domain rdf:resource="&fabric;Contact" />
+    <rdfs:label rdf:datatype="&xsd;string">primary_contact_created_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;primary_contact_id">
+    <rdfs:domain rdf:resource="&fabric;Contact" />
+    <rdfs:label rdf:datatype="&xsd;string">primary_contact_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;primary_contact_role">
+    <rdfs:domain rdf:resource="&fabric;Contact" />
+    <rdfs:label rdf:datatype="&xsd;string">primary_contact_role</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;region">
+    <rdfs:domain rdf:resource="&fabric;Account" />
+    <rdfs:label rdf:datatype="&xsd;string">region</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;renewal_date">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">renewal_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;seats_purchased">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">seats_purchased</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;sessions">
+    <rdfs:domain rdf:resource="&fabric;UsageObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">sessions</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;subscription_id">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">subscription_id</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;string" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;subscription_start_date">
+    <rdfs:domain rdf:resource="&fabric;SubscriptionSnapshot" />
+    <rdfs:label rdf:datatype="&xsd;string">subscription_start_date</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;dateTime" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;tickets_closed_today">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">tickets_closed_today</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;tickets_created_30d">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">tickets_created_30d</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="&fabric;tickets_created_today">
+    <rdfs:domain rdf:resource="&fabric;SupportObservation" />
+    <rdfs:label rdf:datatype="&xsd;string">tickets_created_today</rdfs:label>
+    <rdfs:range rdf:resource="&xsd;integer" />
+  </owl:DatatypeProperty>
+  <ns0:Namespace rdf:about="urn:fabric-internal:namespace:default">
+    <rdfs:label rdf:datatype="&xsd;string">default</rdfs:label>
+  </ns0:Namespace>
+</rdf:RDF>
