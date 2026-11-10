@@ -26,7 +26,7 @@ Updated: November 10, 2026. This is the shared source of truth for progress. Upd
 
 | ID | Task | Owner(s) | Status | Depends on | Acceptance evidence |
 |---|---|---|---|---|---|
-| T01 | Build KQL account journey and three behavioral signals | Sujith + Ashish | **READY — next** | Existing Eventhouse connection; choose bounded historical account cohort | Saved KQL queries derive usage decline, API decline and adoption deterioration from longitudinal observations; cross-check selected account/dates against Spark; disclose historical replay. Do not modify the working risk-event/Activator path. |
+| T01 | Build KQL account journey and three behavioral signals | Sujith + Ashish | **IN PROGRESS** | Existing Eventhouse connection; choose bounded historical account cohort | Saved KQL queries derive usage decline, API decline and adoption deterioration from longitudinal observations; cross-check selected account/dates against Spark; disclose historical replay. Do not modify the working risk-event/Activator path. |
 | T02 | Define canonical identity rules and match-quality report | Ashish + Archi | **READY** | Existing generated IDs; use a small explicitly synthetic multi-source match sample if testing resolution | Written deterministic tenant-scoped rules; known duplicate, unmatched and ambiguous cases; precision/recall against separate synthetic ground truth; no silent cross-tenant merges. |
 | T03 | Add versioned behavioral segmentation and membership history | Irfan + Archi | **READY** | T01 signal definitions | Distinct behavioral segment vs. risk band; rule version, as-of date, evidence and run ID persisted; repeat run creates no duplicates; previous membership remains auditable. |
 | T04 | Register the existing model and persist complete metrics | Irfan | **READY** | Confirm Fabric ML registry support; preserve active release | Registered version reloads successfully; scores match existing pipeline; metric definitions/denominators include accuracy, precision, recall, lift, F1 and PR-AUC; signed attribution reconstruction still passes. |
@@ -36,23 +36,37 @@ Updated: November 10, 2026. This is the shared source of truth for progress. Upd
 | T08 | Export cloud implementation and run end-to-end acceptance | Somnath + all owners | **READY** | Each workstream's exports | Sanitized notebooks/configs/metrics/report/KQL/ontology evidence in approved repo; positive, duplicate, stale, unauthorized, failure and retry paths checked; no credentials committed. |
 | T09 | Rehearse and submit the 5–10-minute judge demo | Archi + Somnath | **READY** | T08 and organizers' confirmed submission instructions | One timed rehearsal, backup recording/screenshots, consistent labels and counts; clearly distinguishes synthetic historical proof from future capabilities. |
 
-## Current next action: T01, one step at a time
+## Current next action: T01.1, bounded usage preview
 
-Start with read-only verification; do not send new events or edit the existing Activator source.
+**Completed T01 verification:** the user ran a `take 5` query against `customer_risk_events`. Its rows are the historical risk-score replay, not the raw daily usage observations required for behavior signals.
 
-1. In Fabric, open the existing **Eventhouse** `eh_customer_intelligence`.
-2. Open the KQL database `eh_customer_intelligence`.
-3. Open the table `customer_risk_events` and run:
+**Now do only this: inspect a bounded sample; do not ingest or modify Eventhouse yet.**
 
-   ```kusto
-   customer_risk_events
-   | take 5
+1. In workspace `ws_customer_intelligence`, create a new Fabric **Notebook** named `08_prepare_usage_journey_demo`.
+2. Attach the existing Lakehouse `lh_customer_intelligence`.
+3. Add a PySpark cell and run:
+
+   ```python
+   from pyspark.sql import functions as F
+
+   usage = spark.table("silver_usage_daily").where(
+       (F.col("account_id") == "ACC008178")
+       & (F.col("snapshot_date") >= F.lit("2025-06-02").cast("date"))
+       & (F.col("snapshot_date") <= F.lit("2025-09-30").cast("date"))
+   )
+
+   print("Rows:", usage.count())
+   display(
+       usage.select(
+           "tenant_id", "account_id", "snapshot_date",
+           "active_users", "sessions", "api_calls", "licensed_seats"
+       ).orderBy("snapshot_date")
+   )
    ```
 
-4. Confirm whether those rows contain actual usage observations (active users, sessions, API calls) or only saved risk-score events.
-5. Capture the column names or a screenshot and report back before creating any query.
+4. Stop and share the row count plus a screenshot of the first/last rows. Do not save new files or send events yet.
 
-**Expected from the existing setup:** `customer_risk_events` contains risk-score events, not daily source usage observations. If so, stop here; the next action is to prepare a small bounded usage-observation export from `silver_usage_daily` and ingest it to a separate Eventhouse table. Do not calculate usage-behavior journeys from risk-score events or label scores as usage behavior.
+Expected: up to 121 daily rows for the synthetic account. The query checks actual availability; do not assume there are no gaps or interpret risk score as a usage signal. If the table or columns are missing, stop and report the exact error.
 
 ## Team update protocol
 

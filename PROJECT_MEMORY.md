@@ -200,6 +200,8 @@ Use the JSONL for exact scores, not rounded values above. Stable event IDs ident
 
 The original schema replay was observed as seven stored rows, seven unique IDs, zero duplicates. This does not guarantee duplicate-free future ingestion.
 
+On November 10 the user ran `customer_risk_events | take 5` in the KQL queryset and shared a screenshot. The visible event identifiers/replay/release/object fields and the known event schema confirm this is the saved risk-score replay table, not a raw daily usage-observation stream. The next behavior-journey work must stage a bounded `silver_usage_daily` export into a separate Eventhouse table; do not calculate usage signals from risk-score events or alter the existing alert source.
+
 ### Activator path
 
 - Property-level rule did not expose needed dynamic event fields. The working rule is **event-level**.
