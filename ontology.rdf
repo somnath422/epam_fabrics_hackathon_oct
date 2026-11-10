@@ -49,7 +49,7 @@
   <owl:Class rdf:about="&fabric;InteractionObservation">
     <rdfs:comment rdf:datatype="&xsd;string">Daily account-level interaction aggregates sourced from silver_interaction_daily. These are rolling engagement measures, not individual meeting or contact events.</rdfs:comment>
     <rdfs:label rdf:datatype="&xsd;string">InteractionObservation</rdfs:label>
-    <skos:altLabel rdf:datatype="&xsd;string">Enghagement Snapshot</skos:altLabel>
+    <skos:altLabel rdf:datatype="&xsd;string">Engagement Snapshot</skos:altLabel>
     <skos:altLabel rdf:datatype="&xsd;string">Interaction Metrics</skos:altLabel>
   </owl:Class>
   <owl:DatatypeProperty rdf:about="&fabric;InteractionObservation__account_id">
