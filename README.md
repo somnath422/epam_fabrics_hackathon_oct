@@ -4,9 +4,12 @@ Explainable B2B SaaS churn early warning and human-reviewed retention actions on
 
 **Start with [PROJECT_MEMORY.md](./PROJECT_MEMORY.md)** for the implementation handoff, verified results, operating instructions, known gaps, and extension roadmap. Updated November 10, 2026.
 
+**Track ongoing work in [TASKS.md](./TASKS.md)**. It records verified progress, owners, dependencies, acceptance evidence, and the next step to complete.
+
 ## Repository map
 
 - [Project memory and continuation guide](./PROJECT_MEMORY.md): current implementation, not just the original plan.
+- [Shared progress board](./TASKS.md): task status and next actions for the team.
 - [Team handbook](./build/README.md) and [shared contracts](./build/02_Shared_Contracts_and_Acceptance.md).
 - [Fabric ingestion and Gold guide](./build/09_Setup_Ingestion_Gold_Guide.md).
 - [Synthetic data generator](./generate_master_csv.py).

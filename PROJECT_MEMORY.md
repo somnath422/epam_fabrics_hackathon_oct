@@ -4,6 +4,8 @@ Last updated: November 10, 2026.
 
 This is the shared engineering handoff and continuation baseline. Read it before changing the project or asking an AI assistant to continue work. It records confirmed demo progress from the build sessions; it is not a fresh inspection of the live tenant. Current capacity, rule, connection, and job status must be checked in Fabric.
 
+The shared work queue is [TASKS.md](./TASKS.md). Update it after each verified milestone; use it for owner/status/dependencies and use this file for durable technical context.
+
 ## 1. Purpose and status
 
 Build a Microsoft Fabric early-warning system for B2B SaaS accounts: predict churn within the next 90 days, explain risk, segment accounts, propose human-reviewed retention plays, and persist review tasks.
@@ -97,7 +99,7 @@ The user created `ont_customer_intelligence` in the Fabric Ontology experience (
 
 Every temporal observation is related from Account using tenant/account keys; Account is related to Contact. The user reports all five relationships were added correctly. Ontology metadata descriptions were added. The Ontology Agent preview returned Account and related Contact details for `TEN007965` / `ACC007965`, and returned three related UsageObservation rows dated Dec 28-30, 2025 with active users, sessions, and API calls. This verifies an interactive agent query over those sources/relationships, not a separately evaluated production Copilot Studio agent.
 
-This improves the previous status: an ontology with entity definitions, OneLake source bindings, relationships, and successful sample queries is now demonstrated. It does **not** establish cross-system identity resolution or a match-quality report; IDs are generated and tenant IDs are effectively one per account. The ontology experience is Preview. Export the ontology definition and retain screenshots before treating it as independently reproducible.
+This improves the previous status: an ontology with entity definitions, OneLake source bindings, relationships, and successful sample queries is now demonstrated. It does **not** establish cross-system identity resolution or a match-quality report; IDs are generated and tenant IDs are effectively one per account. The ontology experience is Preview. A cleaned RDF/XML export is versioned as [`ontology.rdf`](./ontology.rdf), but re-importability and preservation of Fabric source-binding metadata have not been tested; retain screenshots and verify import in a safe test item before relying on it as a full deployment backup.
 
 ## 4. Data foundation and invariants
 
