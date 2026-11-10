@@ -26,10 +26,10 @@
   <text x="92" y="299" class="body">6.67M rows, 41 columns</text>
 
   <rect x="390" y="185" width="270" height="135" class="box" fill="#e8f5f3"/>
-  <text x="412" y="222" class="label">Fabric ingestion</text>
-  <text x="412" y="251" class="body">Data Factory pipelines</text>
-  <text x="412" y="275" class="body">Eventstream daily replay</text>
-  <text x="412" y="299" class="body">OneLake landing zone</text>
+  <text x="412" y="222" class="label">Fabric Lakehouse</text>
+  <text x="412" y="251" class="body">CSV upload to OneLake Files</text>
+  <text x="412" y="275" class="body">Notebook-driven Spark ETL</text>
+  <text x="412" y="299" class="body">No Data Factory pipeline</text>
 
   <path d="M340 252 L390 252" class="arrow"/>
 
@@ -42,67 +42,66 @@
   <text x="92" y="555" class="small">Account, Subscription, Usage, Support</text>
 
   <rect x="390" y="400" width="270" height="185" class="box" fill="#fff7e2"/>
-  <text x="412" y="438" class="label">Eventhouse</text>
-  <text x="412" y="469" class="body">KQL rolling trends</text>
-  <text x="412" y="495" class="body">7/30/90-day usage deltas</text>
-  <text x="412" y="521" class="body">Latest risk state</text>
-  <text x="412" y="555" class="small">Near-real-time demonstration path</text>
+  <text x="412" y="438" class="label">Eventstream → Eventhouse</text>
+  <text x="412" y="469" class="body">Seven saved risk-score events</text>
+  <text x="412" y="495" class="body">Typed KQL event table</text>
+  <text x="412" y="521" class="body">Historical replay, not live usage</text>
+  <text x="412" y="555" class="small">No KQL journey queries demonstrated</text>
 
   <rect x="710" y="400" width="310" height="185" class="box" fill="#e9effb"/>
   <text x="732" y="438" class="label">Data Science notebook</text>
-  <text x="732" y="469" class="body">PySpark trend features</text>
-  <text x="732" y="495" class="body">90-day churn classifier</text>
-  <text x="732" y="521" class="body">MLflow tracking + SHAP</text>
-  <text x="732" y="555" class="small">Out-of-time, out-of-account holdout</text>
+  <text x="732" y="469" class="body">13 allowlisted features</text>
+  <text x="732" y="495" class="body">Logistic regression</text>
+  <text x="732" y="521" class="body">Signed coefficient contributions</text>
+  <text x="732" y="555" class="small">Account- and time-disjoint test</text>
 
-  <path d="M525 320 L525 400" class="arrow"/>
-  <path d="M525 382 L205 382 L205 400" class="arrow"/>
+  <path d="M525 320 L525 355 L205 355 L205 400" class="arrow"/>
   <path d="M205 585 L205 610 L730 610 L730 585" class="arrow"/>
-  <path d="M660 493 L710 493" class="arrow"/>
 
   <text x="70" y="628" class="section">SCORE, EXPLAIN, ACT</text>
   <rect x="70" y="668" width="270" height="170" class="box" fill="#e9effb"/>
   <text x="92" y="706" class="label">Risk scoring</text>
-  <text x="92" y="737" class="body">Churn probability, 90d</text>
-  <text x="92" y="763" class="body">High / Medium / Low</text>
-  <text x="92" y="789" class="body">Top SHAP drivers</text>
-  <text x="92" y="815" class="small">ARR at risk = ARR x probability</text>
+  <text x="92" y="737" class="body">Churn-within-90d score</text>
+  <text x="92" y="763" class="body">High / Medium / Low bands</text>
+  <text x="92" y="789" class="body">Full signed contributions</text>
+  <text x="92" y="815" class="small">ARR x score = prioritisation proxy</text>
 
   <rect x="390" y="668" width="270" height="170" class="box" fill="#edf7e6"/>
   <text x="412" y="706" class="label">Activator</text>
-  <text x="412" y="737" class="body">Threshold rule</text>
-  <text x="412" y="763" class="body">Score crosses High risk</text>
-  <text x="412" y="789" class="body">Retention action record</text>
-  <text x="412" y="815" class="small">Auditable event-to-action link</text>
+  <text x="412" y="737" class="body">Event rule: score >= 0.05</text>
+  <text x="412" y="763" class="body">Validating notebook handler</text>
+  <text x="412" y="789" class="body">Insert-only review task</text>
+  <text x="412" y="815" class="small">Historical event-to-task proof</text>
 
   <rect x="710" y="668" width="310" height="170" class="box" fill="#edf7e6"/>
-  <text x="732" y="706" class="label">Retention alert</text>
-  <text x="732" y="737" class="body">Account, ARR, risk score</text>
-  <text x="732" y="763" class="body">Drivers and recommended play</text>
-  <text x="732" y="789" class="body">Teams/email/CRM handoff</text>
-  <text x="732" y="815" class="small">The system acts, not just reports</text>
+  <text x="732" y="706" class="label">Retention review task</text>
+  <text x="732" y="737" class="body">Account, score, owner, status</text>
+  <text x="732" y="763" class="body">Driver and suggested human play</text>
+  <text x="732" y="789" class="body">Visible in Power BI task register</text>
+  <text x="732" y="815" class="small">Notification not attempted</text>
 
   <path d="M1000 585 L1000 648 L205 648 L205 668" class="arrow"/>
-  <path d="M340 753 L390 753" class="arrow"/>
+  <path d="M340 753 L355 753 L355 610 L525 610 L525 585" class="arrow"/>
+  <path d="M525 585 L525 668" class="arrow"/>
   <path d="M660 753 L710 753" class="arrow"/>
 
   <text x="1100" y="360" class="section">BUSINESS EXPERIENCE</text>
   <rect x="1100" y="400" width="410" height="438" class="box" fill="#ffffff"/>
-  <text x="1130" y="445" class="label">Power BI retention workspace</text>
+  <text x="1130" y="445" class="label">Three-page Power BI report</text>
   <line x1="1130" y1="469" x2="1480" y2="469" stroke="#d7e3e4" stroke-width="2"/>
-  <text x="1130" y="510" class="body">Executive overview, ARR at risk</text>
-  <text x="1130" y="545" class="body">High-risk account workbench</text>
-  <text x="1130" y="580" class="body">Account 360 with 2-year history</text>
-  <text x="1130" y="615" class="body">Risk drivers and actions</text>
+  <text x="1130" y="510" class="body">Sep 30: 55 High / 5 Medium</text>
+  <text x="1130" y="545" class="body">1,582 / 7,982 scored (19.82%)</text>
+  <text x="1130" y="580" class="body">Account score and model signals</text>
+  <text x="1130" y="615" class="body">Retention task register</text>
   <text x="1130" y="665" class="small">Business question:</text>
   <text x="1130" y="698" class="body">Which accounts should we work today,</text>
   <text x="1130" y="726" class="body">why are they at risk, and</text>
   <text x="1130" y="754" class="body">what should we do next?</text>
-  <text x="1130" y="803" class="small">Optional stretch: Copilot / Data Agent Q&amp;A</text>
+  <text x="1130" y="803" class="small">Direct Lake mode not verified</text>
 
   <path d="M1020 753 L1100 620" class="arrow"/>
-  <path d="M1020 490 L1100 530" class="arrow"/>
 
-  <rect x="70" y="900" width="1440" height="42" rx="8" fill="#092f3d"/>
-  <text x="95" y="927" font-family="Arial, sans-serif" font-size="16" fill="#ffffff">Demo moment: replay recorded history → score climbs → threshold crossed → explainable alert, ~90 days before the true cancel date</text>
+  <rect x="70" y="890" width="1440" height="70" rx="8" fill="#092f3d"/>
+  <text x="95" y="917" font-family="Arial, sans-serif" font-size="14" fill="#ffffff">PROOF: July 15 Low → August 1 High historical score replay; Activator created one human-review task. No notification was attempted.</text>
+  <text x="95" y="944" font-family="Arial, sans-serif" font-size="13" fill="#d9e7ea">NOT BUILT / UNVERIFIED: Fabric IQ ontology, multi-source identity matching, KQL journeys, Copilot Studio, Purview labels, Direct Lake mode.</text>
 </svg>

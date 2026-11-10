@@ -323,14 +323,16 @@ Not implemented. Candidate Fabric Data Agent / Copilot Studio integration is sub
 
 Supported future questions could include "Which High-risk accounts belong to my team?", "Why did this account's score rise?", or "What saved review tasks are open?" Do not promise to answer any question.
 
+The business analyst additionally proposed AI-assisted, risk-based retention-marketing strategy suggestions. This is future scope, not a feature in the current demo. A safe design would map supported risk evidence to approved playbooks (for example usage decline -> adoption/onboarding support; support friction -> coordinated service recovery; low engagement -> owner-led value review), state audience/channel/assumptions, respect consent and suppression policies, and require CSM/Marketing approval. Do not autonomously send campaigns. Measure incremental uplift against a control before claiming effectiveness or ROI.
+
 Design:
 
 1. Authenticate caller and enforce identity/RLS at every tool/data access boundary.
 2. Use governed read-only SQL/DAX tools over approved operational/report tables for numeric answers.
-3. Retrieve only approved playbooks for narrative guidance, not arbitrary documents or future outcome labels.
+3. Retrieve only approved playbooks/campaign strategies for qualitative guidance, not arbitrary documents or future outcome labels.
 4. Cite release, snapshot date, metric denominator, cohort coverage, and source evidence.
 5. Abstain on unsupported questions or missing/stale data; separate model associations from causal explanations.
-6. Require explicit human approval for any proposed task mutation or outreach; start read-only.
+6. Require explicit CSM/Marketing approval for any strategy, task mutation, offer, or outreach; start read-only.
 7. Test permission isolation, prompt injection, metric accuracy, unsupported-answer refusal, freshness, latency, and cost before a demo.
 
 Additional later work: measured intervention outcomes, prospective evaluation, incremental scoring, proper CRM integration, and licensed notification delivery. No retained-revenue or intervention-uplift claim is supported yet.
@@ -353,3 +355,13 @@ At each handoff update this file with the date, actual changed artifacts, valida
 - Saved PPTX reopened with 26 slides; ZIP integrity passed.
 - `git diff --check` passed; generated CSV, local environment, and Python cache exclusions were verified.
 - These checks did not send events, rerun large data generation, or execute paid Fabric jobs.
+
+### November 10 judges' criteria audit
+
+The supplied judging rubric weights Business Value 25, Technical Excellence 20, Solution Quality 25, Innovation 15, and Presentation & demo 15. Detailed status and a corrected rehearsal checklist are in [Judges_Readiness_and_Gap_Review.md](./submission/Judges_Readiness_and_Gap_Review.md).
+
+Against the team's seven target capabilities, only the base data/score/event/task/report flow is demonstrated. Fabric IQ ontology, true multi-source identity resolution/match-quality evidence, KQL-derived journeys/signals, scheduled auditable segmentation, Fabric ML registry registration, Copilot Studio agent, customer notification delivery, and Purview labels are absent or unverified. Direct Lake mode is unverified. Do not state them as delivered.
+
+From the held-out confusion matrix, accuracy is derivable as 98.96%, baseline always-negative accuracy is 94.64%, and precision/prevalence lift is 18.44x. Treat accuracy and lift as derived values, not separately persisted model metrics. Keep PR-AUC (Spark `areaUnderPR`) and disjoint account/time split context with all claims.
+
+The initial submission text and demo script contained unverified claims about SHAP, MLflow, live usage replay, 90-day account-specific lead, and notification/CRM delivery. They must be corrected against the current evidence before a pitch; see the readiness review. No live tenant inspection, feature build, paid job, or event send was performed for this audit.

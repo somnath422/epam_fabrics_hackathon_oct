@@ -1,76 +1,88 @@
-# Customer Intelligence Engine Demo Script
+# Customer Intelligence Engine: judges' demo
 
-## Runtime
+**Target: 6-7 minutes** (judges' requested window: 5-10 minutes). One presenter. Use the editable deck plus the already captured Fabric screenshots/run evidence. The demo does not require sending new events during the presentation.
 
-Target duration: 3 minutes. One presenter, one prepared account scenario, one backup screenshot/video recording.
+## Before recording
 
-## Preparation
+- Confirm tenant/workspace is available and current report/table values still match the evidence.
+- Open the deck to slides 1, 3-4, 7-10, 11-15, 16, 18-20; do not present all 26 slides.
+- Open Portfolio Overview, Account History, Retention Actions, Eventhouse event table, and the successful Activator run/task evidence in separate tabs.
+- Keep backup screenshots/video available. Do not start a live replay unless the workspace owner has confirmed the connection, rule, budget, and no unintended notification recipients.
+- Use the **synthetic and historical replay** disclosure before showing metrics.
 
-Pick the demo account before the pitch. Choose a churned account from the dataset with a clean degradation curve and meaningful ARR, and note its true `churn_date`. The whole demo rests on being able to say "the system warned us on this date, the account actually cancelled on that date" and show both.
+## Run of show
 
-## Opening: the customer problem
+### 0:00-0:45 — Problem and promise
 
-"NorthWave Cloud does not need another report that tells customer success who already left. It needs an early warning system that tells the team which accounts are becoming vulnerable, why, and what to do while there is still time to help."
+> "Customer-success teams often see churn at renewal, after the opportunity to help has passed. Customer Intelligence Engine turns product, support, and engagement indicators into a prioritised, explainable review. Today we will show a working synthetic-data proof—not a production claim."
 
-## Scene 1: the portfolio view
+Point out in the architecture that there is a batch Lakehouse/model path and a separate **historical risk-score** replay/action path.
 
-Open the Power BI retention dashboard. Show the number of high-risk accounts, the risk distribution, and the ranked retention workbench sorted by ARR at risk.
+### 0:45-1:45 — Data and evidence
 
-Say:
+Show the model/test slide.
 
-"Ten thousand accounts become a prioritised work queue. It is ranked by revenue at risk, not just by probability, so the team starts where the money is."
+> "The data is seeded synthetic B2B SaaS, 10,000 accounts across a two-year date window. We held out both accounts and time. The 21,178-row test has 925 true positives and 10 false positives at a 0.05 High threshold: 98.93% precision, 81.43% recall, 0.8997 Spark area-under-PR."
 
-## Scene 2: the account explanation
+Then disclose:
 
-Select the prepared demo account.
+> "Because churn-positive snapshots are only 5.36% in this test, an always-negative model would already be 94.64% accurate. We report precision, recall, PR-AUC and account-level detection—not accuracy alone. Results are synthetic and not proof of production performance."
 
-Show:
+If asked about warning time:
 
-- Account name, industry, plan tier, ARR
-- Churn probability and risk level
-- The 2-year behavioural history chart: seat utilisation, sessions, API calls
-- Support panel: critical open tickets, 30-day ticket volume, average resolution time
-- Engagement panel: days since last CSM touch, no-show rate
-- Top risk drivers and the recommended retention play
+> "Among 152 detected accounts, the first correct alert observed within the test window had a 54-day median lead, from 3 to 90 days. That is not a guaranteed 90-day warning and is not an account's lifetime-first alert."
 
-Say:
+### 1:45-3:00 — Portfolio and account review
 
-"The score is not a black box. This account is high risk because seat utilisation is down thirty-seven percent, two critical tickets are open, resolution time has tripled, and the CSM has not spoken to them in three weeks. That is written for a customer success manager, not for an algorithm engineer."
+Open Portfolio Overview with the September 30, 2025 date selected.
 
-## Scene 3: the live event stream
+> "This page makes coverage explicit: 1,582 of 7,982 eligible accounts are scored, 19.82%. This is a bounded test/reporting cohort, not the whole eligible portfolio. There are 55 High, 5 Medium, and 1,522 Low."
 
-Start the replay. The dataset holds a genuine daily history, so play the account's real final months forward and let the score move with the data.
+Open Account History for `ACC008178`.
 
-Show Eventstream/Eventhouse and the KQL rolling-trend view, then the refreshed risk score.
+> "Here we inspect the selected account's score and available usage/support/engagement context. The driver contributions explain how this model score was assembled; they are associations in a synthetic dataset, not causal reasons."
 
-Say:
+Only describe fields and date ranges visible on screen. Do not claim a full two-year chart if the report view does not show it.
 
-"This is not random jitter. We are replaying this account's actual recorded behaviour, one day at a time, through Eventstream into Eventhouse. The usage decay you are watching is in the source data."
+### 3:00-4:15 — Historical event path
 
-## Scene 4: the action and the lead time
+Show the Eventhouse table or dashboard and the seven saved events.
 
-Show the score crossing the configured threshold. Show the Activator alert or retention-task record. Then put the alert date and the account's true `churn_date` side by side.
+> "These are seven saved model-score snapshots for one synthetic account, sent through the custom Eventstream endpoint into Eventhouse. They preserve historical event time and current replay time. This demonstrates the Fabric event ingestion path; it is not raw product-usage streaming or online inference."
 
-Say:
+Show July 15 score `0.015839` (Low) and August 1 score `0.103627` (High). The High threshold is `0.05`.
 
-"The alert fired here. The account actually cancelled here. That gap is roughly ninety days, and that gap is the entire product. The alert carries the account, ARR, score, drivers, timestamp, and recommended play, so the team can act immediately."
+### 4:15-5:30 — Activator creates a review task
 
-## Closing: business impact
+Show the successful `alert_demo_001` handler log and the Retention Actions row.
 
-"Customer Intelligence Engine combines OneLake, Spark, MLflow, Eventstream, Eventhouse, Activator, and Power BI into a reusable early-warning accelerator. It tells a SaaS provider where to spend retention effort, ninety days before the renewal conversation, with an auditable reason for every action."
+> "The event-level Activator rule invoked a validating notebook. It checked the replay, release, exact saved snapshot, score and High band, then created an insert-only retention task with an owner, evidence, and suggested play. We verified the task in Power BI."
 
-## Backup plan
+Be explicit:
 
-If the live replay fails, show the prepared before-and-after screenshots or a short recording. Do not improvise the architecture. The fallback must still show:
+> "Notification status is 'Not attempted'. No email, Teams or CRM message was delivered. This is a durable human-review task, not autonomous customer outreach."
 
-1. Initial account score early in the history.
-2. The degradation across the replayed days.
-3. Updated score crossing the threshold.
-4. Driver explanation.
-5. Retention alert, and the lead time against the true cancel date.
+### 5:30-6:30 — Business value and future marketing strategy
 
-## Questions to expect
+> "The working value is a more focused, explainable queue for human review; no retained revenue or intervention uplift has been measured. Our next AI-assisted idea—suggested by our business analyst—is to use the account's supported risk drivers to draft retention-marketing options from approved playbooks. Usage decline might suggest an onboarding session; support friction might suggest coordinated service recovery. A CSM and Marketing must approve the audience, channel, and offer. We would measure incremental retention with a control before calling it effective."
 
-- **"Is this data real?"** No, and we say so first. It is synthetic, generated by a seeded script we can re-run on stage. We chose that deliberately: the public telecom churn dataset we started with has no timestamps and no entity model, so it cannot support a forward-looking ninety-day label at all.
-- **"How do you know it is not leaking?"** The holdout is both out-of-time and out-of-account. Post-cancellation rows do not exist in the data, and no feature is derived from the label.
-- **"Only three percent of rows are positive — is accuracy meaningful?"** No, which is why we report PR-AUC and precision at a fixed alert budget, against a business baseline of flagging any account whose 30-day active-user trend drops more than twenty-five percent.
+Show the future Copilot slide and explicitly label it **concept, not built**. It should ground numeric answers in governed data, cite evidence, respect permissions, and abstain rather than "answer anything."
+
+### 6:30-6:50 — Close
+
+> "We have demonstrated a complete, inspectable path from a held-out risk score to a human-owned task. The next step is not to overclaim production readiness: it is to export the cloud assets, validate identity and governance, and test intervention value with an approved customer pilot."
+
+## Likely questions
+
+- **Is this production customer data?** No. It is generated synthetic data; the pre-churn degradation is intentionally designed into the generator.
+- **Does the system guarantee three months' warning?** No. Target label is churn within 90 days; observed median warning among test detections is 54 days, minimum 3, with test-window censoring.
+- **Is this SHAP?** No. It is signed coefficient contribution relative to training medians; the complete signed terms reconstruct the model score.
+- **Is it streaming actual customer behavior?** No. Eventstream carried seven saved risk-score events in a historical replay.
+- **Did Activator notify a CSM?** No. It created a task; notification was not attempted because the sandbox lacked supported mailbox/Teams delivery.
+- **Can the Copilot create campaigns or answer anything?** Neither is built. The future proposal is bounded to approved playbooks and data, cites its evidence, respects consent/permissions, and requires human approval.
+- **Is the model registered in Fabric ML, and is the report Direct Lake?** Those implementation details were not verified; do not claim either.
+- **What about identity resolution, Fabric IQ, and Purview?** Not implemented/evidenced. This dataset has generated stable identifiers and is synthetic; it has no multi-source matching exercise or applied Purview labels.
+
+## Backup behavior
+
+If a live report or tenant page is slow, use the embedded dashboard screenshot, saved Eventhouse evidence, and successful Activator run/task screenshot. Do not send an event again simply because monitoring is slow; check the event/task first. Keep the synthetic-data and notification disclosures in the narration.

@@ -12,6 +12,7 @@ Explainable B2B SaaS churn early warning and human-reviewed retention actions on
 - [Synthetic data generator](./generate_master_csv.py).
 - [Local historical replay sender](./send_replay_events.py) and [seven saved model-score events](./schema_setup_001.jsonl).
 - [Editable 26-slide judges' deck](./submission/Customer_Intelligence_Engine_Judges_Deck.pptx).
+- [Judges' capability gap and readiness review](./submission/Judges_Readiness_and_Gap_Review.md) and [corrected 6-7 minute demo script](./submission/Demo_Script.md).
 - [Original blueprint](./blueprint/Customer_Intelligence_Engine_Blueprint.md).
 
 The demo uses synthetic data and historical replay, not live inference. A retention task was created automatically; email/Teams delivery was not demonstrated. The chatbot in the deck is a future concept, not an implemented feature.
