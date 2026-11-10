@@ -202,7 +202,23 @@ The original schema replay was observed as seven stored rows, seven unique IDs, 
 
 On November 10 the user ran `customer_risk_events | take 5` in the KQL queryset and shared a screenshot. The visible event identifiers/replay/release/object fields and the known event schema confirm this is the saved risk-score replay table, not a raw daily usage-observation stream. The next behavior-journey work must stage a bounded `silver_usage_daily` export into a separate Eventhouse table; do not calculate usage signals from risk-score events or alter the existing alert source.
 
-The user created a separate Fabric notebook `08_prepare_usage_journey_demo`, attached `lh_customer_intelligence`, and ran a read-only preview of `silver_usage_daily` for `TEN008178` / `ACC008178`, June 2-September 30, 2025. The screenshot showed 121 rows and fields `active_users`, `sessions`, `api_calls`, and `licensed_seats`. Next: calculate Spark reference values for current 30 days (Sep 1-30) vs prior 30 days (Aug 2-31), require 30 observations in each window, and only then prepare a separate Eventhouse behavioral-observation path. No new usage events have been ingested yet.
+The user created a separate Fabric notebook `08_prepare_usage_journey_demo`, attached `lh_customer_intelligence`, and previewed `silver_usage_daily` for `TEN008178` / `ACC008178`, June 2-September 30, 2025. It exported 121 synthetic historical usage observations with stable event IDs and replay/synthetic flags to `Files/replay/usage_journey_001`. Spark reference comparison used inclusive windows Aug 2-31 and Sep 1-30, each with 30 observations:
+
+| Metric | Prior average | Current average | Decline |
+|---|---:|---:|---:|
+| Active users | 12.6667 | 6.4 | 49.47% |
+| API calls | 1900.1333 | 951.3667 | 49.93% |
+| Seat utilization | 30.89% | 15.61% | 49.47% |
+
+On November 10 the user ingested this bounded sample into the separate Eventhouse table `customer_usage_observations_demo`. KQL verification showed 121 rows, one account, 121 unique events, and the expected June 2-September 30 range. The KQL comparison query used the same date windows and averages as Spark; the user confirmed it was saved as `usage_journey_001_degradation`. T01 is complete. This proves a synthetic historical replay, not live inference or production telemetry. The risk-score table `customer_risk_events`, its Eventstream route, and Activator source were left untouched. The notebook and KQL query remain cloud-only and have not been exported to Git.
+
+### Identity rules and synthetic match-quality fixture — November 10, 2026
+
+The user created the Fabric notebook `09_identity_match_quality_demo` and profiled the Silver account/contact tables. `silver_account` has 10,000 rows and columns `tenant_id`, `account_id`, `account_name`, `domain`, `industry`, `region`, `employee_count`, `created_date`, `arr_usd`, and `csm_owner`. `silver_contact` has 10,000 rows and columns `primary_contact_id`, `tenant_id`, `account_id`, `primary_contact_role`, and `primary_contact_created_date`; it has no email. Both tables have 10,000 distinct `(tenant_id, account_id)` pairs. There are zero contact account keys missing from accounts, zero account IDs reused across tenants, zero duplicate non-empty domains within a tenant, and zero accounts with multiple contact rows.
+
+The documented canonical rule is exact tenant-scoped account identity: auto-match only if both `tenant_id` and `account_id` are present and the exact pair resolves to exactly one catalog record. Do not auto-match on domain. A domain is at most a review candidate when tenant is present; duplicate keys, missing tenant, ambiguous domains, and incomplete/unmatched keys remain unresolved for review. Never merge across tenant boundaries.
+
+The notebook ran a separate eight-record synthetic fixture with a separately declared ground truth. It verified the exact-key matches, a duplicated catalog key, missing tenant, domain candidate, cross-tenant lookalike, ambiguous domain, and unmatched complete keys. The output was TP=2, FP=0, FN=3; automatic-match precision=100%, recall=40%. These are fixture-level metrics only—not evidence of production match quality, real identity resolution, or multi-source deduplication. No Lakehouse source was modified; notebook evidence remains cloud-only and is not exported to Git.
 
 ### Activator path
 
